@@ -34,30 +34,33 @@ export default function Contacts() {
   
   return (
     <div >
+      
       {/* generating area */}
-      <div>
-        <h1>Contacts</h1>
-        <p>{message}</p>
-        <Button onClick={handleGenerateFakeData}>generate</Button>
-        
-        {contactsList && <table>
-          <thead>
-              <tr>
-                <th>First Name</th>   
-                <th>Last Name</th>
-                <th>Email</th>
+      {(!loading || contactsList) && 
+        <div>
+          <h1>Contacts</h1>
+          <p>{message}</p>
+          <Button onClick={handleGenerateFakeData}>generate</Button>
+          
+          {contactsList && 
+          <table>
+            <thead>
+                <tr>
+                  <th>First Name</th>   
+                  <th>Last Name</th>
+                  <th>Email</th>
+                </tr>
+            </thead>
+            {contactsList.map((contact,index)=>(
+              <tr key={index}>
+                <TableCell>{contact.firstname} </TableCell>
+                <TableCell>{contact.lastname} </TableCell>
+                <TableCell>{contact.email} </TableCell>
               </tr>
-          </thead>
-        {contactsList.map((contact,index)=>(
-        <tr key={index}>
-          <TableCell>{contact.firstname} </TableCell>
-          <TableCell>{contact.lastname} </TableCell>
-          <TableCell>{contact.email} </TableCell>
-        </tr>
-      ))}
-        </table>}
-        
-      </div>
+            ))}
+          </table>}
+        </div>
+  }
 
     </div>
   )
