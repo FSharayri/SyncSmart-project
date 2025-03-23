@@ -4,10 +4,13 @@ import {faker} from '@faker-js/faker';
 import {Button, TableCell} from '@mui/material';
 import { useState,useEffect } from 'react';
 
+
 export default function Contacts() {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [contactsList, setContactsList] = useState([])
+  const [SyncSmartList, setSyncSmartList] = useState([])
+  const [LyntonList, setLyntonList] = useState([])
   const handleGenerateFakeData = () => {
     setMessage("Generating fake data...");
     setLoading(true);
@@ -24,15 +27,41 @@ export default function Contacts() {
         lastname: lastName,
         email: email,
       };
-      contacts.push(contact);
+      contacts.push(contact)
     }
-    setContactsList(contacts);
-    setMessage("Fake data generated.");
-    setLoading(false);
+    setContactsList(contacts)
+    setMessage("Fake data generated.")
+    setLoading(false)
   }
+
+  const handleUploadtoSyncSmart = async () => {
+    setMessage("Uploading contacts to SyncSmart...");
+    setLoading(true);
+    try {
+      const res = await fetch('/api/syncsmart', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({  contactsList }),
+      });
+      if (res.ok) {
+        setMessage("Contacts uploaded to SyncSmart successfully.");
+      } else {
+        setMessage("Unable to upload contacts to SyncSmart endpoint.");
+      }
+    } catch (error) {
+      setMessage("Unable to complete Request (SyncSmart):" + error);
+      console.error('Request Error:', error)
+    } finally {
+      setLoading(false);
+    }
+  }
+  
+
   return (
     <div >
-      {/* generating area */}
+      {/* -------------- generating contacts field -------------- */}
         <div>
           <h1>Generate Fake Contacts</h1> 
           <p>{loading? "loading...": ""}</p>
@@ -58,7 +87,21 @@ export default function Contacts() {
             </table>
           }
         </div>
+        {/* -------------- SyncSmart field -------------- */}
+        <div>
+          <h1>SyncSmart</h1>
+          <p>{loading? "loading...": ""}</p>
+          <p>{message}</p>
+          <Button onClick={handleUploadtoSyncSmart}>Upload to SyncSmart</Button>
+        </div>
+        
+        {/* -------------- Lynton field -------------- */}
+        <div>
+          <h1>Lynton</h1>
+          <p>{loading? "loading...": ""}</p>
+          <p>{message}</p>
+          <Button onClick={handleUploadtoLynton}>Upload to Lynton</Button>
+        </div>
     </div>
   )
-
 }
