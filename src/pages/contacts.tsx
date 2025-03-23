@@ -29,39 +29,35 @@ export default function Contacts() {
     setContactsList(contacts);
     setMessage("Fake data generated.");
     setLoading(false);
-
   }
-  
   return (
     <div >
-      
       {/* generating area */}
-      {(!loading || contactsList) && 
         <div>
-          <h1>Contacts</h1>
+          <h1>Generate Fake Contacts</h1> 
+          <p>{loading? "loading...": ""}</p>
           <p>{message}</p>
           <Button onClick={handleGenerateFakeData}>generate</Button>
           
-          {contactsList && 
-          <table>
-            <thead>
-                <tr>
-                  <th>First Name</th>   
-                  <th>Last Name</th>
-                  <th>Email</th>
+          {contactsList[0] && 
+            <table>
+              <thead>
+                  <tr>
+                    <th>First Name</th>   
+                    <th>Last Name</th>
+                    <th>Email</th>
+                  </tr>
+              </thead>
+              {contactsList.map((contact,index)=>(
+                <tr key={index}>
+                  <TableCell>{contact.firstname} </TableCell>
+                  <TableCell>{contact.lastname} </TableCell>
+                  <TableCell>{contact.email} </TableCell>
                 </tr>
-            </thead>
-            {contactsList.map((contact,index)=>(
-              <tr key={index}>
-                <TableCell>{contact.firstname} </TableCell>
-                <TableCell>{contact.lastname} </TableCell>
-                <TableCell>{contact.email} </TableCell>
-              </tr>
-            ))}
-          </table>}
+              ))}
+            </table>
+          }
         </div>
-  }
-
     </div>
   )
 
