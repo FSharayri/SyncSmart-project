@@ -121,6 +121,7 @@ export default function Contacts() {
       handleUploadtoLynton()
         .then(() => {
           setAutoRunning(false);
+          setLyntonPostReq(true);
         })
         .catch((error) => {
           console.error("Error uploading to Lynton:", error);
@@ -133,8 +134,18 @@ export default function Contacts() {
     setAutoRunning(true)
     handleGenerateFakeData()
     await handleUploadtoSyncSmart()
+    setSyncSmartPostReq(true)
     await handlefetchSyncSmart()
-    // No need to call handleUploadtoLynton useEffect handles it.
+    //  handleUploadtoLynton is handled with useEffect .
+  }
+  const resetAll = () => {
+    setContactsList([])
+    setSyncSmartList([])
+    setLyntonList([])
+    setSyncSmartPostReq(false)
+    setLyntonPostReq(false)
+    setAutoRunning(false)
+    setMessage("")
   }
   return (
     <div>
@@ -142,6 +153,7 @@ export default function Contacts() {
         <p style={{ display:'inline' }} >{message}</p>
         <p style={{ display:'inline'}} >{loading && <CircularProgress size={10}/>}</p>
         <Button variant="contained" style={{ display:'inline', alignSelf:'left'}} onClick={automateProcess} >Automate Process</Button>
+        <Button variant="contained" style={{ display:'inline', alignSelf:'left'}} onClick={resetAll} >Reset</Button>
       </div>
       {/* Flex container for the three sections */}
       <div style={{ display: 'flex', flexDirection: 'row', gap: '1rem' }}>
@@ -185,13 +197,18 @@ export default function Contacts() {
                 </tr>
               </thead>
               <tbody>
-                {SyncSmartList.map((contact, index) => (
-                  <tr key={index}>
-                    <TableCell>{contact.properties.firstname}</TableCell>
-                    <TableCell>{contact.properties.lastname}</TableCell>
-                    <TableCell>{contact.properties.email}</TableCell>
-                  </tr>
-                ))}
+                {SyncSmartList.map((contact, index) => {
+                  const {properties} = contact
+                  const {firstname, lastname, email} = properties
+                  return (
+                    <tr key={index}>
+                      <TableCell>{firstname}</TableCell>
+                      <TableCell>{lastname}</TableCell>
+                      <TableCell>{email}</TableCell>
+                    </tr>
+                  )
+                  })
+                }
               </tbody>
             </Table>
           }
