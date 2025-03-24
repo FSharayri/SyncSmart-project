@@ -114,6 +114,7 @@ export default function Contacts() {
       setLoading(false)
     }
   },[SyncSmartList, setMessage, setLoading, setLyntonPostReq])
+  
   useEffect(() => {
     if (autoRunning && SyncSmartList.length > 0 && !lyntonPostReq) {
       handleUploadtoLynton()
