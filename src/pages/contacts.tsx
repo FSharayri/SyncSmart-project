@@ -13,7 +13,6 @@ export default function Contacts() {
   const [loading, setLoading] = useState(false)
   const [contactsList, setContactsList] = useState([])
   const [SyncSmartList, setSyncSmartList] = useState([])
-  const [LyntonList, setLyntonList] = useState([])
   const [syncsmartPostReq, setSyncSmartPostReq] = useState(false)
   const [lyntonPostReq, setLyntonPostReq] = useState(false)
   const [autoRunning, setAutoRunning] = useState(false)
@@ -141,11 +140,12 @@ export default function Contacts() {
   const resetAll = () => {
     setContactsList([])
     setSyncSmartList([])
-    setLyntonList([])
+    setLoading(false)
     setSyncSmartPostReq(false)
     setLyntonPostReq(false)
     setAutoRunning(false)
     setMessage("")
+
   }
   return (
     <div>
@@ -171,13 +171,18 @@ export default function Contacts() {
                 </tr>
               </thead>
               <tbody>
-                {contactsList.map((contact, index) => (
-                  <tr key={index}>
-                    <TableCell>{contact.firstname}</TableCell>
-                    <TableCell>{contact.lastname}</TableCell>
-                    <TableCell>{contact.email}</TableCell>
-                  </tr>
-                ))}
+                {contactsList.map((contact, index) => 
+                  {
+                  const {firstname, lastname, email} = contact
+                  return(
+                    <tr key={index}>
+                      <TableCell>{firstname}</TableCell>
+                      <TableCell>{lastname}</TableCell>
+                      <TableCell>{email}</TableCell>
+                    </tr>
+                  )
+                  }
+                )}
               </tbody>
             </Table>
           }
