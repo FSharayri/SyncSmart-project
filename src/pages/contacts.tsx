@@ -1,8 +1,8 @@
 import React from 'react'
-import { faker } from '@faker-js/faker'
-import { Button, Table, TableCell } from '@mui/material'
+import { Button, Table, TableCell, CircularProgress } from '@mui/material'
 import { useState } from 'react'
-
+import type {Faker} from '@faker-js/faker' 
+import {faker} from '@faker-js/faker' 
 interface Contact {
   firstName: string;
   lastName: string;
@@ -15,6 +15,8 @@ export default function Contacts() {
   const [contactsList, setContactsList] = useState([])
   const [SyncSmartList, setSyncSmartList] = useState([])
   const [LyntonList, setLyntonList] = useState([])
+  const [syncsmartpostreq, setSyncSmartPostReq] = useState(false)
+  const [lyntonpostreq, setLyntonPostReq] = useState(false)
 
   const handleGenerateFakeData = () => {
     setMessage("Generating fake data...")
@@ -32,7 +34,7 @@ export default function Contacts() {
       }
       contacts.push(contact)
     }
-    setContactsList(contacts)
+    setContactsList(contacts as [])
     setMessage("Fake data generated.")
     setLoading(false)
   }
@@ -48,6 +50,7 @@ export default function Contacts() {
       })
       if (res.ok) {
         setMessage("Contacts uploaded to SyncSmart successfully.")
+        setSyncSmartPostReq(true)
       } else {
         setMessage("Unable to upload contacts to SyncSmart endpoint.")
       }
@@ -84,14 +87,16 @@ export default function Contacts() {
 
   return (
     <div>
-      <p>{loading ? "loading..." : ""}</p>
-      <p>{message}</p>
+      <div style={{ height:'5vh', alignItems:'center', justifyContent:'center',display:'flex', flexDirection:'row', gap:'1rem'}}>
+        <p style={{ display:'inline' }} >{message}</p>
+        <p style={{ display:'inline'}} >{loading && <CircularProgress size={10}/>}</p>
+      </div>
       {/* Flex container for the three sections */}
       <div style={{ display: 'flex', flexDirection: 'row', gap: '1rem' }}>
         {/* Generate Fake Contacts */}
         <div style={{ flex: 1, border: '1px solid #ccc', padding: '1rem' }}>
           <h1>Generate Fake Contacts</h1>
-          <Button onClick={handleGenerateFakeData}>Generate</Button>
+          <Button  variant="contained" onClick={handleGenerateFakeData} disabled={loading || contactsList.length>0}>Generate {contactsList.length>0? '✅':''}</Button>
           {contactsList[0] && 
             <Table>
               <thead>
@@ -116,8 +121,8 @@ export default function Contacts() {
         {/* SyncSmart */}
         <div style={{ flex: 1, border: '1px solid #ccc', padding: '1rem' }}>
           <h1>SyncSmart</h1>
-          <Button onClick={handleUploadtoSyncSmart}>Upload to SyncSmart</Button>
-          <Button onClick={handlefetchSyncSmart}>Fetch contacts from SyncSmart</Button>
+          <Button variant="contained" onClick={handleUploadtoSyncSmart} disabled={loading || syncsmartpostreq}>Upload to SyncSmart {syncsmartpostreq? '✅':''}</Button>
+          <Button variant="contained" onClick={handlefetchSyncSmart} disabled={loading || SyncSmartList.length>0}>Fetch contacts from SyncSmart {SyncSmartList.length>0? '✅':''}</Button>
           {SyncSmartList[0] && 
             <Table>
               <thead>
