@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback,useEffect, useState } from 'react'
 import { Button, Table, TableCell, CircularProgress } from '@mui/material'
-import type {Faker} from '@faker-js/faker' 
 import {faker} from '@faker-js/faker' 
 interface Contact {
   firstName: string;
@@ -88,7 +87,7 @@ export default function Contacts() {
     }
   }
   
-  const handleUploadtoLynton = async () => {
+  const handleUploadtoLynton = useCallback(async () => {
     setMessage("Uploading contacts to Lynton...")
     setLoading(true)
     if (SyncSmartList.length === 0) {
@@ -114,7 +113,7 @@ export default function Contacts() {
     } finally {
       setLoading(false)
     }
-  }
+  },[SyncSmartList, setMessage, setLoading, setLyntonPostReq])
   useEffect(() => {
     if (autoRunning && SyncSmartList.length > 0 && !lyntonPostReq) {
       handleUploadtoLynton()
@@ -127,7 +126,7 @@ export default function Contacts() {
           setAutoRunning(false);
         });
     }
-  }, [SyncSmartList, autoRunning, lyntonPostReq]);
+  }, [SyncSmartList, autoRunning, lyntonPostReq,handleUploadtoLynton ]);
 
   const automateProcess = async () => {
     setAutoRunning(true)
