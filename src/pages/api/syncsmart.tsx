@@ -6,9 +6,7 @@ interface Contact {
   lastname: string;
   email: string;
 }
-interface RequestBody {
-  contacts: Contact[];
-}
+
 
 
 export default async function handler( req: NextApiRequest, res: NextApiResponse) {

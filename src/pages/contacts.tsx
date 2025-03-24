@@ -1,6 +1,5 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, Table, TableCell, CircularProgress } from '@mui/material'
-import { useState } from 'react'
 import type {Faker} from '@faker-js/faker' 
 import {faker} from '@faker-js/faker' 
 interface Contact {
@@ -15,9 +14,9 @@ export default function Contacts() {
   const [contactsList, setContactsList] = useState([])
   const [SyncSmartList, setSyncSmartList] = useState([])
   const [LyntonList, setLyntonList] = useState([])
-  const [syncsmartpostreq, setSyncSmartPostReq] = useState(false)
-  const [lyntonpostreq, setLyntonPostReq] = useState(false)
-
+  const [syncsmartPostReq, setSyncSmartPostReq] = useState(false)
+  const [lyntonPostReq, setLyntonPostReq] = useState(false)
+  const [autoRunning, setAutoRunning] = useState(false)
   const handleGenerateFakeData = () => {
     setMessage("Generating fake data...")
     setLoading(true)
@@ -42,6 +41,11 @@ export default function Contacts() {
   const handleUploadtoSyncSmart = async () => {
     setMessage("Uploading contacts to SyncSmart...")
     setLoading(true)
+    if (contactsList.length === 0) {
+      setMessage("No contacts to upload to SyncSmart.")
+      setLoading(false)
+      return
+    }
     try {
       const res = await fetch('/api/syncsmart', {
         method: 'POST',
@@ -84,12 +88,60 @@ export default function Contacts() {
       setLoading(false)
     }
   }
+  
+  const handleUploadtoLynton = async () => {
+    setMessage("Uploading contacts to Lynton...")
+    setLoading(true)
+    if (SyncSmartList.length === 0) {
+      setMessage("No contacts to upload to Lynton.")
+      setLoading(false)
+      return
+    }
+    try {
+      const res = await fetch('/api/lynton', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ SyncSmartList }),
+      })
+      if (res.ok) {
+        setMessage("Contacts uploaded to Lynton successfully.")
+        setLyntonPostReq(true)
+      } else {
+        setMessage("Unable to upload contacts to Lynton endpoint.")
+      }
+    } catch (error) {
+      setMessage("Unable to complete POST Request (Lynton): " + (error as string))
+      console.error('Request Error:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+  useEffect(() => {
+    if (autoRunning && SyncSmartList.length > 0 && !lyntonPostReq) {
+      handleUploadtoLynton()
+        .then(() => {
+          setAutoRunning(false);
+        })
+        .catch((error) => {
+          console.error("Error uploading to Lynton:", error);
+          setAutoRunning(false);
+        });
+    }
+  }, [SyncSmartList, autoRunning, lyntonPostReq]);
 
+  const automateProcess = async () => {
+    setAutoRunning(true)
+    handleGenerateFakeData()
+    await handleUploadtoSyncSmart()
+    await handlefetchSyncSmart()
+    // No need to call handleUploadtoLynton useEffect handles it.
+  }
   return (
     <div>
       <div style={{ height:'5vh', alignItems:'center', justifyContent:'center',display:'flex', flexDirection:'row', gap:'1rem'}}>
         <p style={{ display:'inline' }} >{message}</p>
         <p style={{ display:'inline'}} >{loading && <CircularProgress size={10}/>}</p>
+        <Button variant="contained" style={{ display:'inline', alignSelf:'left'}} onClick={automateProcess} >Automate Process</Button>
       </div>
       {/* Flex container for the three sections */}
       <div style={{ display: 'flex', flexDirection: 'row', gap: '1rem' }}>
@@ -121,7 +173,7 @@ export default function Contacts() {
         {/* SyncSmart */}
         <div style={{ flex: 1, border: '1px solid #ccc', padding: '1rem' }}>
           <h1>SyncSmart</h1>
-          <Button variant="contained" onClick={handleUploadtoSyncSmart} disabled={loading || syncsmartpostreq}>Upload to SyncSmart {syncsmartpostreq? '✅':''}</Button>
+          <Button variant="contained" onClick={handleUploadtoSyncSmart} disabled={loading || syncsmartPostReq}>Upload to SyncSmart {syncsmartPostReq? '✅':''}</Button>
           <Button variant="contained" onClick={handlefetchSyncSmart} disabled={loading || SyncSmartList.length>0}>Fetch contacts from SyncSmart {SyncSmartList.length>0? '✅':''}</Button>
           {SyncSmartList[0] && 
             <Table>
@@ -147,7 +199,8 @@ export default function Contacts() {
         {/* Lynton */}
         <div style={{ flex: 1, border: '1px solid #ccc', padding: '1rem' }}>
           <h1>Lynton</h1>
-          {/* <Button onClick={handleUploadtoLynton}>Upload to Lynton</Button> */}
+          <p>Upload contacts from SyncSmart to Lynton</p>
+          <Button variant="contained" onClick={handleUploadtoLynton} disabled={loading || lyntonPostReq}>Upload to Lynton {lyntonPostReq? '✅':''}</Button>
         </div>
       </div>
     </div>
