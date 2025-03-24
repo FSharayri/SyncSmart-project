@@ -56,6 +56,7 @@ export default async function handler( req: NextApiRequest, res: NextApiResponse
   }else if (req.method === 'GET') {
     // Process a GET request
     try {
+      // simple solution to a problem with the data duplication, fetching the most recently created 100 contacts is more accurate because those are the contacts that were generated from a fake data library and uploaded to SyncSmart
       const response = await fetch(url + '?limit=100&sort=-createdate', {
         method: 'GET',
         headers: {
@@ -67,6 +68,7 @@ export default async function handler( req: NextApiRequest, res: NextApiResponse
         throw new Error(`Error fetching contacts: ${response.statusText}`);
       }
       const data = await response.json() as { results: Contact[] };
+      
       console.log("Latest 100 contacts:", data.results.slice(0,5));
       return data.results;
     } catch (error) {
