@@ -79,7 +79,7 @@ export default async function handler( req: NextApiRequest, res: NextApiResponse
       
       console.log("Latest 100 contacts:", data.results.slice(0,5));
       res.status(200).json(data.results); 
-      // return data.results;
+      
     } catch (error) {
       console.error("Error fetching contacts:", error);
     }

@@ -24,7 +24,6 @@ export default async function handler( req: NextApiRequest, res: NextApiResponse
       return
     }
     try{
-
     const LyntonList = await Promise.all(
       SyncSmartList.map(contact => 
         fetch(url, {
