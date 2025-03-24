@@ -4,6 +4,11 @@ import {faker} from '@faker-js/faker';
 import {Button, Table, TableCell} from '@mui/material';
 import { useState,useEffect } from 'react';
 
+interface Contact {
+  firstName: string;
+  lastName: string;
+  email: string;
+}
 
 export default function Contacts() {
   const [message, setMessage] = useState("");
@@ -49,7 +54,7 @@ export default function Contacts() {
         setMessage("Unable to upload contacts to SyncSmart endpoint.");
       }
     } catch (error) {
-      setMessage("Unable to complete POST Request (SyncSmart):" + error);
+      setMessage("Unable to complete POST Request (SyncSmart): " + (error as string));
       console.error('Request Error:', error)
     } finally {
       setLoading(false);
@@ -66,8 +71,8 @@ export default function Contacts() {
         },
       });
       if (res.ok) {
-        const data = await res.json();
-        setSyncSmartList(data)
+        const data = await res.json() as Contact[] ;
+        setSyncSmartList(data as []);
         setMessage("Contacts fetched from SyncSmart successfully.");
       } else {
         setMessage("Unable to fetch contacts from SyncSmart endpoint.");
