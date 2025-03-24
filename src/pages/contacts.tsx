@@ -18,7 +18,7 @@ export default function Contacts() {
     let firstName;
     let lastName;
     let email;
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 100; i++) {
       firstName = (faker.person.firstName as () => string)();
       lastName = (faker.person.lastName as () => string)();
       email = (faker.internet.email as () => string)();
