@@ -1,29 +1,36 @@
-# Create T3 App
+# SyncSmart Integration Coding Challenge
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+## Project Overview
+This project is a take-home assessment for the SyncSmart Integration Coding Challenge. The goal is to create a NextJS application that integrates with HubSpot's API to manage contacts between two test portals.
 
-## What's next? How do I make an app with this?
+## Requirements
+1. **Initialize NextJS App**: Use [create-t3-app](https://create.t3.gg/) to initialize a new NextJS app using the "pages" router.
+2. **HubSpot Developer Account**: Create a developer account in HubSpot and set up two test portals.
+3. **Authentication**: Use "private app tokens" or OAuth for authenticating with HubSpot’s API.
+4. **Component Library**: Use [MUI](https://mui.com/material-ui/) as the component library.
+5. **TypeScript**: Utilize TypeScript throughout the project.
+6. **Fake Data Generation**: Find a library for generating fake data and create a page with a button that generates 100 contacts in one of the test accounts. Each contact should have at least a first name, last name, and email.
+7. **Data Transfer**: Create another button that pulls contacts from the first HubSpot portal and creates them in the second HubSpot portal.
+8. **Video Recording**: Record and share a video demonstrating the process, results, and work.
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+## Getting Started
+1. **Clone the Repository**: Clone the project repository to your local machine.
+2. **Install Dependencies**: Run `npm install` to install all necessary dependencies.
+3. **Environment Variables**: Set up environment variables for HubSpot API tokens and other configurations.
+4. **Run the App**: Use `npm run dev` to start the development server.
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+## Usage
+- **Generate Contacts**: Navigate to the designated page and click the button to generate 100 fake contacts in the first HubSpot portal.
+- **Transfer Contacts**: Click the button to transfer the generated contacts from the first HubSpot portal to the second HubSpot portal.
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Drizzle](https://orm.drizzle.team)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+## Libraries and Tools
+- **NextJS**: Framework for building the application.
+- **MUI**: Component library for UI elements.
+- **TypeScript**: Type-safe language for writing the application.
+- **Faker.js**: Library for generating fake data.
 
-## Learn More
+## Video Demonstration
+A video demonstrating the process, results, and work will be provided separately.
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
-
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
-
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
-
-## How do I deploy this?
-
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+## Conclusion
+This project demonstrates the integration of a NextJS application with HubSpot's API, utilizing MUI for UI components and TypeScript for type safety. The application generates and transfers contacts between two HubSpot portals, showcasing the ability to manage data programmatically.

@@ -6,9 +6,6 @@ interface Contact {
   lastname: string;
   email: string;
 }
-
-
-
 export default async function handler( req: NextApiRequest, res: NextApiResponse) {
   const url = 'https://api.hubapi.com/crm/v3/objects/contacts'
   const SyncSmartToken = process.env.HUBSPOT_SYNCSMART_TOKEN
