@@ -2,12 +2,12 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 
 // linting error ? not anymore . . .
 interface Contact {
-  firstname: string;
-  lastname: string;
-  email: string;
+  properties: {
+    firstname: string;
+    lastname: string;
+    email: string;
+  }
 }
-
-
 
 export default async function handler( req: NextApiRequest, res: NextApiResponse) {
   const url = 'https://api.hubapi.com/crm/v3/objects/contacts'

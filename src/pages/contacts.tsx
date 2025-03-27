@@ -15,6 +15,7 @@ export default function Contacts() {
   const [syncsmartPostReq, setSyncSmartPostReq] = useState(false)
   const [lyntonPostReq, setLyntonPostReq] = useState(false)
   const [autoRunning, setAutoRunning] = useState(false)
+  
   const handleGenerateFakeData = () => {
     setMessage("Generating fake data...")
     setLoading(true)
