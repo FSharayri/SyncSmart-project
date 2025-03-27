@@ -34,9 +34,9 @@ export default async function handler( req: NextApiRequest, res: NextApiResponse
           },
           body: JSON.stringify({
             properties: {
-              firstname: contact.firstname,
-              lastname: contact.lastname,
-              email: contact.email,
+              firstname: contact.properties.firstname,
+              lastname: contact.properties.lastname,
+              email: contact.properties.email,
             },
           })
         })
